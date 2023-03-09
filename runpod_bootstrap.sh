@@ -9,7 +9,7 @@
 ## MODELS_S3_URI=s3://*************
 
 ## The Docker Command field should be:
-## bash -c ' wget -O /workspace/stable-diffusion-webui/sd_runpod.sh https://github.com/lebowitz/LoRA/runpod_bootstrap.sh;
+## bash -c ' wget -O /workspace/stable-diffusion-webui/sd_runpod.sh https://raw.githubusercontent.com/lebowitz/LoRA/main/runpod_bootstrap.sh;
 ## chmod +x /workspace/stable-diffusion-webui/sd_runpod.sh  
 ## /workspace/stable-diffusion-webui/sd_runpod.sh   '
 
