@@ -1,3 +1,19 @@
+# RunPod
+
+## Port Forward 3000
+
+```
+SERVER=*****; PORT=****; ssh -L 3000:localhost:3000 -y -p $PORT -i ~/.ssh/runpod.io root@$SERVER 
+```
+
+Now you can use http://localhost:3000 instead of gradio. This is more private because traffic is not routed through gradio reverse proxy.
+
+Replace the server and port with the values given in the RunPod Connect modal dialog.
+
+This relies on setting the AUTHORIZED_KEY env variable in my template. 
+
+# Dreambooth 
+
 download 10 high quality jpg's 
 
 paint.net, rec selection tool,  
@@ -20,10 +36,9 @@ now they are all square
 
 select files in explorer, right click windows image resize 
 
+# Upload to AWS S3 Bucket
 
- 
-
-##Upload to s3://lebowitz/models/training/putin 
+I use a private bucket which I sync with AWS at the 
 
  
 
@@ -33,8 +48,6 @@ pushd /workspace
 
 apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma 
 liblzma-dev python3-venv 
-
- 
 
 wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz 
 tar -xf Python-3.10.*.tgz 
@@ -91,8 +104,5 @@ popd
 
  
 
-#port forward 
 
-SERVER=*****; PORT=****; ssh -L 3000:localhost:3000 -y -p $PORT -i ~/.ssh/runpod.io root@$SERVER 
 
-# now you can use http://localhost:3000 instead of gradio. this is more private   
