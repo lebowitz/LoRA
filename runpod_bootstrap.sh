@@ -9,9 +9,9 @@
 ## MODELS_S3_URI=s3://*************
 
 ## The Docker Command field should be:
-## bash -c ' wget -O /workspace/stable-diffusion-webui/sd_runpod.sh https://raw.githubusercontent.com/lebowitz/LoRA/main/runpod_bootstrap.sh;
-## chmod +x /workspace/stable-diffusion-webui/sd_runpod.sh  
-## /workspace/stable-diffusion-webui/sd_runpod.sh   '
+## bash -c ' git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
+## chmod +x /workspace/LoRA/runpod_bootstrap.sh
+## /workspace/LoRA/runpod_bootstrap.sh   '
 
 bash -c "DEBIAN_FRONTEND=noninteractive; 
 apt update;
@@ -26,16 +26,19 @@ cd /workspace/stable-diffusion-webui;
 git pull;
 git checkout $COMMIT_STABLE_DIFFUSION_WEBUI
 if [ ! -f awscliv2.zip ]; then     
-echo 'Installing aws CLI...';
+echo 'Installing AWS CLI...';
 curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip';
 unzip awscliv2.zip > /dev/null
 else  
-echo 'aws CLI exists.'; 
+echo 'AWS CLI exists.'; 
 fi
  
-alias aws=/workspace/stable-diffusion-webui/aws/dist/aws
 aws configure set default.region us-east-1
-aws s3 sync $MODELS_S3_URI /workspace/stable-diffusion-webui/models/ &
+AWS_BIN=/workspace/stable-diffusion-webui/aws/dist/aws
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ &
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ &
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ &
+
 pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
 [ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
@@ -51,50 +54,8 @@ pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension;
 git checkout $COMMIT_SD_DREAMBOOTH_EXTENSION
 popd
  
-pip3 install --upgrade diffusers[torch] --quiet
-pip3 install discord-webhook --quiet
-pip3 install tensorflow --quiet
-pip3 install accelerate==0.16 --quiet
-pip3 install triton --quiet
-pushd /workspace
-apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma 
-liblzma-dev python3-venv 
-wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz 
-tar -xf Python-3.10.*.tgz 
-cd Python-3.10.*/ 
- 
-./configure --enable-optimizations 
-make –j 16 # cpu core 
-make altinstall 
-popd 
-pushd /workspace
-apt install --quiet -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma
-liblzma-dev python3-venv
-wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz -O Python-3.10.9.tgz 
-tar -xf Python-3.10.9.tgz --quiet
-cd Python-3.10.9/
-./configure --enable-optimizations
-make –j 16 # cpu core
-make altinstall
-popd
-git clone https://github.com/kohya-ss/sd-scripts
-pushd /workspace/sd-scripts
-rm -rf venv
-python3.10 -m venv venv
-source venv/bin/activate
-pip install --upgrade -r requirements.txt
-pip install xformers
-pip install triton
-popd
-apt-get --yes --quiet install liblzma-dev lzma
-# recompile/install python??!!
-# no idea but this hack is necessary to work around the missing _lzma module error popd
-pushd /workspace/Python-3.10.9/
-./configure --enable-optimizations
-make –j 16 # cpu core
-make altinstall
-popd
- 
+bash /workspace/LoRA/runpod_sd_scripts.sh &
+
 export REQS_FILE=/workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension/requirements.txt
  
 chmod +x /start.sh;
