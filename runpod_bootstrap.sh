@@ -48,7 +48,6 @@ pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d sd-webui-additional-networks ] && git clone https://github.com/kohya-ss/sd-webui-additional-networks
 [ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
 [ ! -d sd_dreambooth_extension ] && git clone https://github.com/d8ahazard/sd_dreambooth_extension
-[ ! -d sd_civitai_extension ] && git clone https://github.com/civitai/sd_civitai_extension
 popd
 pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension; 
 git checkout $COMMIT_SD_DREAMBOOTH_EXTENSION
