@@ -36,7 +36,7 @@ fi
 alias aws=/workspace/stable-diffusion-webui/aws/dist/aws
 aws configure set default.region us-east-1
 #aws s3 sync $MODELS_S3_URI /workspace/stable-diffusion-webui/models/ &
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/
+aws s3 sync $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/Stable-diffusion
 
 pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
