@@ -14,7 +14,7 @@
 ## /workspace/LoRA/runpod_bootstrap.sh   '
 
 bash -c "DEBIAN_FRONTEND=noninteractive; 
-apt update;
+apt update >> /workspace/log.txt;
 apt install -y htop nano zip p7zip-full wget openssh-server net-tools --yes --quiet;
 mkdir -p ~/.ssh;
 chmod 700 ~/.ssh;
@@ -25,11 +25,11 @@ service ssh start;
 cd /workspace/stable-diffusion-webui;
 
 git pull;
-git checkout $COMMIT_STABLE_DIFFUSION_WEBUI
+git checkout $COMMIT_STABLE_DIFFUSION_WEBUI >> /workspace/log.txt
 if [ ! -f awscliv2.zip ]; then     
 echo 'Installing AWS CLI...';
-curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip';
-unzip awscliv2.zip > /dev/null
+curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' >> /workspace/log.txt
+unzip awscliv2.zip >> /workspace/log.txt
 else  
 echo 'AWS CLI exists.'; 
 fi
@@ -52,6 +52,7 @@ pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d sd-webui-additional-networks ] && git clone https://github.com/kohya-ss/sd-webui-additional-networks
 [ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
 [ ! -d sd_dreambooth_extension ] && git clone https://github.com/d8ahazard/sd_dreambooth_extension
+
 popd
 pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension; 
 git checkout $COMMIT_SD_DREAMBOOTH_EXTENSION
