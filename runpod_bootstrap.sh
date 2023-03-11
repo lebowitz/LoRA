@@ -14,7 +14,7 @@
 ## /workspace/LoRA/runpod_bootstrap.sh   '
 
 bash -c "DEBIAN_FRONTEND=noninteractive; 
-apt update;
+apt update > /dev/null
 apt install -y htop nano zip p7zip-full wget openssh-server net-tools --yes --quiet;
 mkdir -p ~/.ssh;
 chmod 700 ~/.ssh;
@@ -24,20 +24,20 @@ chmod 700 ~/.ssh/authorized_keys ~/.ssh/id_rsa;
 service ssh start; 
 cd /workspace/stable-diffusion-webui;
 git pull;
-git checkout $COMMIT_STABLE_DIFFUSION_WEBUI
+git checkout $COMMIT_STABLE_DIFFUSION_WEBUI | /dev/null
 if [ ! -f awscliv2.zip ]; then     
 echo 'Installing AWS CLI...';
-curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip';
-unzip awscliv2.zip > /dev/null
+curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' | /dev/null;
+unzip awscliv2.zip | /dev/null
 else  
 echo 'AWS CLI exists.'; 
 fi
  
 aws configure set default.region us-east-1
 AWS_BIN=/workspace/stable-diffusion-webui/aws/dist/aws
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ &
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ &
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ &
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ 
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ 
+$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ 
 
 pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
