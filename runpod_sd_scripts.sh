@@ -11,20 +11,26 @@ liblzma-dev python3-venv  >> /workspace/log.txt
 wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz  >> /workspace/log.txt
 tar -xf Python-3.10.*.tgz  >> /workspace/log.txt
 
-pushd Python-3.10.9/ 
+pushd Python-3.10.9
+
 ./configure --enable-optimizations >> /workspace/log.txt
 make –j 16  >> /workspace/log.txt
 make altinstall  >> /workspace/log.txt
+
 popd 
 
+rm -rf sd-scripts
 git clone https://github.com/kohya-ss/sd-scripts
 pushd /workspace/sd-scripts
+
 rm -rf venv
 python3.10 -m venv venv  >> /workspace/log.txt
 source venv/bin/activate
+
 pip install --upgrade -r requirements.txt   >> /workspace/log.txt 
 pip install xformers  >> /workspace/log.txt 
 pip install triton  >> /workspace/log.txt
+
 popd
 
 # the sd_script fail with _lzma error if you don't do this part
