@@ -39,6 +39,7 @@ ln -s /workspace/stable-diffusion-webui/aws/dist/aws /usr/bin/aws
 aws configure set default.region us-east-1
 
 aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ 
+aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/chilloutmix_Ni.safetensors /workspace/stable-diffusion-webui/models/ 
 aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ 
 aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ 
 
