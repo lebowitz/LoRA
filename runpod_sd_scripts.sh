@@ -9,29 +9,29 @@ pip3 install triton --quiet
 apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma 
 liblzma-dev python3-venv 
 wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz 
-tar -xf Python-3.10.*.tgz 
+tar -xf Python-3.10.*.tgz | /dev/null
 cd Python-3.10.*/ 
  
-./configure --enable-optimizations 
-make –j 16 # cpu core 
-make altinstall 
+./configure --enable-optimizations | /dev/null
+make –j 16 | /dev/null
+make altinstall | /dev/null
 popd 
 pushd /workspace
 apt install --quiet -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma
-liblzma-dev python3-venv
-wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz -O Python-3.10.9.tgz 
-tar -xf Python-3.10.9.tgz --quiet
+liblzma-dev python3-venv | /dev/null
+wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz -O Python-3.10.9.tgz | /dev/null
+tar -xf Python-3.10.9.tgz --quiet 
 cd Python-3.10.9/
-./configure --enable-optimizations
+./configure --enable-optimizations | /dev/null
 make –j 16 # cpu core
-make altinstall
+make altinstall | /dev/null
 popd
 git clone https://github.com/kohya-ss/sd-scripts
 pushd /workspace/sd-scripts
 rm -rf venv
 python3.10 -m venv venv
 source venv/bin/activate
-pip install --upgrade -r requirements.txt
+pip install --upgrade -r requirements.txt 
 pip install xformers
 pip install triton
 popd
@@ -43,7 +43,7 @@ apt-get --yes --quiet install liblzma-dev lzma
 # no idea, but this hack is necessary to work around the missing _lzma module error popd
 
 pushd /workspace/Python-3.10.9/
-./configure --enable-optimizations
-make –j 16 # cpu core
-make altinstall
+./configure --enable-optimizations | /dev/null
+make –j 16 | /dev/null
+make altinstall | /dev/null
 popd
