@@ -9,7 +9,7 @@
 ## MODELS_S3_URI=s3://*************
 
 ## The Docker Command field should be:
-## bash -c ' git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
+## bash -c ' rm -rf /workspace/LoRA; git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
 ## chmod +x /workspace/LoRA/runpod_bootstrap.sh
 ## /workspace/LoRA/runpod_bootstrap.sh   '
 
@@ -23,6 +23,7 @@ echo $PRIVATE_KEY > ~/.ssh/id_rsa
 chmod 700 ~/.ssh/authorized_keys ~/.ssh/id_rsa; 
 service ssh start; 
 cd /workspace/stable-diffusion-webui;
+
 git pull;
 git checkout $COMMIT_STABLE_DIFFUSION_WEBUI
 if [ ! -f awscliv2.zip ]; then     
@@ -32,14 +33,17 @@ unzip awscliv2.zip > /dev/null
 else  
 echo 'AWS CLI exists.'; 
 fi
- 
+
+ln -s /workspace/stable-diffusion-webui/aws/dist/aws /usr/bin/aws
+
 aws configure set default.region us-east-1
-AWS_BIN=/workspace/stable-diffusion-webui/aws/dist/aws
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ &
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ &
-$AWS_BIN s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ &
+
+aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ 
+aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ 
+aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ 
 
 pushd /workspace/stable-diffusion-webui/extensions
+
 [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
 [ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
 [ ! -d stable-diffusion-webui-images-browser ] && git clone https://github.com/AlUlkesh/stable-diffusion-webui-images-browser
