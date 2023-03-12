@@ -61,6 +61,7 @@ pushd /workspace/stable-diffusion-webui/extensions
 [ ! -d sd-webui-additional-networks ] && git clone https://github.com/kohya-ss/sd-webui-additional-networks
 [ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
 [ ! -d sd_dreambooth_extension ] && git clone https://github.com/d8ahazard/sd_dreambooth_extension
+[ ! -d sd-webui-supermerger ] && git clone https://github.com/hako-mikan/sd-webui-supermerger
 
 popd
 pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension; 
