@@ -40,8 +40,12 @@ aws configure set default.region us-east-1
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ >> /workspace/aws_log.txt &
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/chilloutmix_Ni.safetensors /workspace/stable-diffusion-webui/models/ >> /workspace/aws_log.txt & 
+pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
+[ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt &
+[ ! -f v1-5-pruned.ckpt ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt &
+[ ! -f BstaberX.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt & 
+popd
+
 aws s3 sync $MODELS_S3_URI/Stable-diffusion/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt &
 aws s3 sync $MODELS_S3_URI/Stable-diffusion/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt &
 
