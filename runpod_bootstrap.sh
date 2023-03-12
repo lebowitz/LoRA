@@ -26,7 +26,7 @@ cd /workspace/stable-diffusion-webui;
 
 git pull;
 git checkout $COMMIT_STABLE_DIFFUSION_WEBUI >> /workspace/log.txt
-if [ ! -f awscliv2.zip ]; then     
+if [ ! -f /workspace/stable-diffusion-webui/aws/dist/aws ]; then     
 echo 'Installing AWS CLI...';
 curl 'https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip' -o 'awscliv2.zip' >> /workspace/log.txt
 unzip awscliv2.zip >> /workspace/log.txt
@@ -40,10 +40,10 @@ aws configure set default.region us-east-1
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
-aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ 
-aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/chilloutmix_Ni.safetensors /workspace/stable-diffusion-webui/models/ 
-aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ 
-aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/training /workspace/stable-diffusion-webui/models/training/ 
+aws s3 sync $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ >> /workspace/aws_log.txt &
+aws s3 sync $MODELS_S3_URI/Stable-diffusion/chilloutmix_Ni.safetensors /workspace/stable-diffusion-webui/models/ >> /workspace/aws_log.txt & 
+aws s3 sync $MODELS_S3_URI/Stable-diffusion/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt &
+aws s3 sync $MODELS_S3_URI/Stable-diffusion/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt &
 
 pushd /workspace/stable-diffusion-webui/extensions
 
