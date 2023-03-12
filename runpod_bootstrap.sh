@@ -37,6 +37,8 @@ fi
 ln -s /workspace/stable-diffusion-webui/aws/dist/aws /usr/bin/aws
 
 aws configure set default.region us-east-1
+aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
 aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/v1-5-pruned.ckpt /workspace/stable-diffusion-webui/models/ 
 aws s3 sync $MODELS_S3_URI/stable-diffusion/webui/models/chilloutmix_Ni.safetensors /workspace/stable-diffusion-webui/models/ 
