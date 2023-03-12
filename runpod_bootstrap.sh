@@ -47,9 +47,9 @@ pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
 [ ! -f real_life_test.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/real_life_test.safetensors . >> /workspace/aws_log.txt 
 popd
 
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
-aws s3 sync $MODELS_S3_URI/Stable-diffusion/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
+aws s3 sync $MODELS_S3_URI/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
+aws s3 sync $MODELS_S3_URI/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
+aws s3 sync $MODELS_S3_URI/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
 
 pushd /workspace/stable-diffusion-webui/extensions
 
