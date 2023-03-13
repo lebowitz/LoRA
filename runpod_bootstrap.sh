@@ -41,10 +41,14 @@ aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
 pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
+
+# sync
 [ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt
-[ ! -f v1-5-pruned.ckpt ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt
-[ ! -f BstaberX.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt 
-[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt 
+
+# async
+[ ! -f v1-5-pruned.ckpt ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt &
+[ ! -f BstaberX.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt & 
+[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt & 
 
 popd
 
