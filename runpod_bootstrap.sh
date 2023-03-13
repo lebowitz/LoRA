@@ -44,7 +44,8 @@ pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
 [ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt
 [ ! -f v1-5-pruned.ckpt ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt
 [ ! -f BstaberX.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt 
-[ ! -f real_life_test.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/real_life_test.safetensors . >> /workspace/aws_log.txt 
+[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp $MODELS_S3_URI/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt 
+
 popd
 
 aws s3 sync $MODELS_S3_URI/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
