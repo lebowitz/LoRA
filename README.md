@@ -2,11 +2,7 @@
 
 ## Docker Command Bootstrap
 
-This is a technique to bootstrap a runpod image by using code in the Docker Command field. The recommended usage is to create a custom runpod template with this boostrap. Then a pod can be created on this template, used, and stopped and deleted, stopping charges.
-
-The bootstrap code in the Docker Command clones this repo and runs `runpod_bootstrap.sh`. 
-
-This script installs various extensions. It also checks out specified commits for the webui and dreambooth extension. This is required to recreate a consistently working environment. Unfortunately the stable-diffusion-webui and dreambooth extension aren't reliabily integrating with each other with the latest versions.
+This is a technique to bootstrap a runpod image by using code in the Docker Command field. The recommended usage is to create a custom runpod template with this bootstrap. Then a pod can be created on this template, used, and stopped and deleted, stopping charges. The alternative to this would be to create a docker image containing safetensors etc, but this is more flexible at the expense of the bandwidth to bootstrap.
 
 The Docker Command field should be:
 
@@ -14,6 +10,17 @@ The Docker Command field should be:
 bash -c ' rm -rf /workspace/LoRA; git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
 bash /workspace/LoRA/runpod_bootstrap.sh   '
 ```
+
+The `runpod_bootstrap.sh` script installs various extensions. It also checks out specified commits for the webui and dreambooth extension. This is required to recreate a consistently working environment. Unfortunately `stable-diffusion-webui` and `sd-dreambooth-extension` aren't reliabily integrating with each other with the latest versions.
+
+Environment variables:
+
+- AWS_ACCESS_KEY_ID=*************
+- AWS_SECRET_ACCESS_KEY=*************
+- AUTHORIZED_KEY=ssh-ed25519 ************* your_email@example.com
+- COMMIT_STABLE_DIFFUSION_WEBUI=c98cb0
+- COMMIT_SD_DREAMBOOTH_EXTENSION=fd51c0
+- MODELS_S3_URI=s3://*************
 
 ## Port Forward 3000
 
