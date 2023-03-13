@@ -10,7 +10,7 @@ if [ ! -f /workspace/Python-3.10.9.tgz ]; then
 
   apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev zlib1g-dev lzma  >> /workspace/log.txt
   liblzma-dev python3-venv >> /workspace/sd_scripts_log.txt
-  wget https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz >> /workspace/sd_scripts_log.txt
+  wget --quiet https://www.python.org/ftp/python/3.10.9/Python-3.10.9.tgz >> /workspace/sd_scripts_log.txt
   tar -xf Python-3.10.9.tgz >> /workspace/sd_scripts_log.txt
 
   pushd Python-3.10.9
