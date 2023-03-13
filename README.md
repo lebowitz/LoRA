@@ -1,14 +1,29 @@
 # RunPod
 
+## Docker Command Bootstrap
+
+This is a technique to bootstrap a runpod image by using code in the Docker Command field. The recommended usage is to create a custom runpod template with this boostrap. Then a pod can be created on this template, used, and stopped and deleted, stopping charges.
+
+The bootstrap code in the Docker Command clones this repo and runs `runpod_bootstrap.sh`. 
+
+This script installs various extensions. It also checks out specified commits for the webui and dreambooth extension. This is required to recreate a consistently working environment. Unfortunately the stable-diffusion-webui and dreambooth extension aren't reliabily integrating with each other with the latest versions.
+
+The Docker Command field should be:
+
+```
+bash -c ' rm -rf /workspace/LoRA; git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
+bash /workspace/LoRA/runpod_bootstrap.sh   '
+```
+
 ## Port Forward 3000
 
 The `runpod_ssh.sh` script forwards port 3000 from the localhost to the pod using SSH. You can use http://localhost:3000 instead of gradio. This is more private because traffic is not routed through the reverse proxy.
 
 Requires: 
- - The `runpodctl` utility 
- - Setting the AUTHORIZED_KEY env variable in my template. This is what lets the local host authorize to the pod via SSH.
+ - The `runpodctl` utility. https://github.com/runpod/runpodctl
+ - Setting the AUTHORIZED_KEY env variable in my template. This is what lets the local host authorize to the pod via SSH. The private key for this public key should exist on the local host at `~/.ssh/runpod.io`. 
 
-# Dreambooth 
+## Dreambooth 
 
 download 10 high quality jpg's 
 
@@ -24,11 +39,11 @@ now they are all square
 
 select files in explorer, right click windows image resize 
 
-# Upload to AWS S3 Bucket
+## Upload to AWS S3 Bucket
 
-I use a private bucket which I sync with AWS.  
+I use a private S3 bucket with models that the bootstrap syncs with the pod. Training data is also downloaded this way. See the `runpod_bootstrap.sh` script.
 
-# kohya-ss/sd-scripts
+## kohya-ss/sd-scripts
 
 The bootstrap script `runpod_bootstrap.sh` calls `runpod_sd_scripts.sh` which does a convoluted install of requirements for sd-scripts. Work in progress.
 
