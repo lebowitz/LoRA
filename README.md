@@ -20,7 +20,7 @@ Environment variables:
 - AUTHORIZED_KEY=ssh-ed25519 *************
 - COMMIT_STABLE_DIFFUSION_WEBUI=c98cb0
 - COMMIT_SD_DREAMBOOTH_EXTENSION=fd51c0
-- MODELS_S3_URI=your_bucket_name
+- S3_BUCKET=your_bucket_name
 
 ## Runpod.io Cost Control
 
