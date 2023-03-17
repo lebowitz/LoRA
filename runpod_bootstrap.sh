@@ -57,9 +57,10 @@ aws s3 sync s3://$S3_BUCKET/models/RealESRGAN /workspace/stable-diffusion-webui/
 aws s3 sync s3://$S3_BUCKET/models/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
 
 if [ ! -f /workspace/workspace.7z ]; then 
-echo 'Downloading workspace.7z...';
+    echo 'Downloading workspace.7z...';
     aws s3 cp s3://$S3_BUCKET/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
-    7z x /workspace/workspace.7z -o/workspace >> /workspace/aws_log.txt
+    echo 'Extracting workspace.7z...';
+    7z x /workspace/workspace.7z -o/workspace -y >> /workspace/aws_log.txt
 else
     echo 'workspace.7z exists.';
 fi
