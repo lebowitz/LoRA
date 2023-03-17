@@ -56,15 +56,23 @@ aws s3 sync $MODELS_S3_URI/Lora /workspace/stable-diffusion-webui/models/Lora/ >
 aws s3 sync $MODELS_S3_URI/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
 aws s3 sync $MODELS_S3_URI/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
 
+if [ ! -f /workspace/workspace.7z ]; then 
+echo 'Downloading workspace.7z...';
+    aws s3 cp $MODELS_S3_URI/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
+    7z x /workspace/workspace.7z -o/workspace >> /workspace/aws_log.txt
+else
+    echo 'workspace.7z exists.';
+fi
+
 pushd /workspace/stable-diffusion-webui/extensions
 
-[ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
-[ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
+# [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
+# [ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
 [ ! -d stable-diffusion-webui-images-browser ] && git clone https://github.com/AlUlkesh/stable-diffusion-webui-images-browser
-[ ! -d a1111-sd-webui-tagcomplete ] && git clone https://github.com/DominikDoom/a1111-sd-webui-tagcomplete
-[ ! -d stable-diffusion-webui-tokenizer ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-tokenizer
+# [ ! -d a1111-sd-webui-tagcomplete ] && git clone https://github.com/DominikDoom/a1111-sd-webui-tagcomplete
+# [ ! -d stable-diffusion-webui-tokenizer ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-tokenizer
 [ ! -d sd-webui-additional-networks ] && git clone https://github.com/kohya-ss/sd-webui-additional-networks
-[ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
+# [ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
 [ ! -d sd_dreambooth_extension ] && git clone https://github.com/d8ahazard/sd_dreambooth_extension
 [ ! -d sd-webui-supermerger ] && git clone https://github.com/hako-mikan/sd-webui-supermerger
 
