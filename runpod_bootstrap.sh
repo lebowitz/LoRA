@@ -6,7 +6,7 @@
 ## AUTHORIZED_KEY=ssh-ed25519 ************* your_email@example.com
 ## COMMIT_STABLE_DIFFUSION_WEBUI=c98cb0
 ## COMMIT_SD_DREAMBOOTH_EXTENSION=fd51c0
-## MODELS_S3_URI=s3://<bucket/
+## S3_BUCKET=lebowitz
 
 ## The Docker Command field should be:
 ## bash -c ' rm -rf /workspace/LoRA; git clone https://github.com/lebowitz/LoRA.git /workspace/LoRA;
@@ -43,22 +43,22 @@ aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
 
 # sync
-[ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp $MODELS_S3_URI/models/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt
+[ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt
 
 # async
-[ ! -f v1-5-pruned.ckpt ] && aws s3 cp $MODELS_S3_URI/models/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt &
-[ ! -f BstaberX.safetensors ] && aws s3 cp $MODELS_S3_URI/models/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt & 
-[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp $MODELS_S3_URI/models/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt & 
+[ ! -f v1-5-pruned.ckpt ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt &
+[ ! -f BstaberX.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt & 
+[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt & 
 
 popd
 
-aws s3 sync $MODELS_S3_URI/models/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
-aws s3 sync $MODELS_S3_URI/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
-aws s3 sync $MODELS_S3_URI/models/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
+aws s3 sync s3://$S3_BUCKET/models/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
+aws s3 sync s3://$S3_BUCKET/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
+aws s3 sync s3://$S3_BUCKET/models/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
 
 if [ ! -f /workspace/workspace.7z ]; then 
 echo 'Downloading workspace.7z...';
-    aws s3 cp $MODELS_S3_URI/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
+    aws s3 cp s3://$S3_BUCKET/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
     7z x /workspace/workspace.7z -o/workspace >> /workspace/aws_log.txt
 else
     echo 'workspace.7z exists.';
