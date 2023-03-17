@@ -20,7 +20,7 @@ Environment variables:
 - AUTHORIZED_KEY=ssh-ed25519 *************
 - COMMIT_STABLE_DIFFUSION_WEBUI=c98cb0
 - COMMIT_SD_DREAMBOOTH_EXTENSION=fd51c0
-- MODELS_S3_URI=s3://*************
+- MODELS_S3_URI=your_bucket_name
 
 ## Runpod.io Cost Control
 
@@ -38,9 +38,9 @@ Requires:
  - The `runpodctl` utility. https://github.com/runpod/runpodctl
  - Setting the AUTHORIZED_KEY env variable in my template. This is what lets the local host authorize to the pod via SSH. The private key for this public key should exist on the local host at `~/.ssh/runpod.io`. 
 
-## Upload to AWS S3 Bucket
+## Restore From AWS S3 Bucket
 
-I use a private S3 bucket with models that the bootstrap template syncs with the pod. Training data is also downloaded this way. See the `runpod_bootstrap.sh` script.
+I use a private S3 bucket with models that the bootstrap template syncs with the pod. Training data is also downloaded this way. See the `runpod_bootstrap.sh` script. The file `workspace.7z` in the bucket is downloaded and extracted at `/workspace`.
 
 ## kohya-ss/sd-scripts
 
