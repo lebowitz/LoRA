@@ -3,6 +3,11 @@ export PYTHON_VERSION=3.10.9
 
 pushd /workspace
 
+#pip install --force-reinstall -v "diffusers==0.14"
+#pip install --force-reinstall -v "accelerate==0.16"
+#pip install xformers==0.0.17.dev476
+#pip install blip-vit==0.0.3
+
 # pip3 install --upgrade diffusers[torch] --quiet >> /workspace/sd_scripts_log.txt
 # pip3 install discord-webhook --quiet >> /workspace/sd_scripts_log.txt
 # pip3 install tensorflow --quiet >> /workspace/sd_scripts_log.txt
