@@ -19,7 +19,7 @@ apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-de
 if [ ! -f /workspace/Python-$PYTHON_VERSION.tgz ]; then     
 
   echo "Downloading Python-$PYTHON_VERSION..."
-  liblzma-dev python3-venv >> /workspace/sd_scripts_log.txt
+  apt install liblzma-dev python3-venv >> /workspace/sd_scripts_log.txt
   wget --quiet https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz >> /workspace/sd_scripts_log.txt
   tar -xf Python-$PYTHON_VERSION.tgz >> /workspace/sd_scripts_log.txt
 
