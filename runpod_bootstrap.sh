@@ -6,6 +6,7 @@
 ## AUTHORIZED_KEY=ssh-ed25519 ************* your_email@example.com
 ## COMMIT_STABLE_DIFFUSION_WEBUI=c98cb0
 ## COMMIT_SD_DREAMBOOTH_EXTENSION=fd51c0
+## WORKSPACE_PASSWORD=<your password>
 ## S3_BUCKET=lebowitz
 
 ## The Docker Command field should be:
@@ -40,48 +41,35 @@ aws configure set default.region us-east-1
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
-pushd /workspace/stable-diffusion-webui/models/Stable-diffusion
-
-# sync
-[ ! -f chilloutmix_Ni.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/chilloutmix_Ni.safetensors . >> /workspace/aws_log.txt
-
-# async
-[ ! -f v1-5-pruned.ckpt ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/v1-5-pruned.ckpt . >> /workspace/aws_log.txt &
-[ ! -f BstaberX.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/BstaberX.safetensors . >> /workspace/aws_log.txt & 
-[ ! -f uberRealisticPornMerge_urpmv13.safetensors ] && aws s3 cp s3://$S3_BUCKET/models/Stable-diffusion/uberRealisticPornMerge_urpmv13.safetensors . >> /workspace/aws_log.txt & 
-
-popd
-
-aws s3 sync s3://$S3_BUCKET/models/Lora /workspace/stable-diffusion-webui/models/Lora/ >> /workspace/aws_log.txt
-aws s3 sync s3://$S3_BUCKET/models/RealESRGAN /workspace/stable-diffusion-webui/models/RealESRGAN/ >> /workspace/aws_log.txt
-aws s3 sync s3://$S3_BUCKET/models/training /workspace/stable-diffusion-webui/models/training/ >> /workspace/aws_log.txt
-
 if [ ! -f /workspace/workspace.7z ]; then 
     echo 'Downloading workspace.7z...';
     aws s3 cp s3://$S3_BUCKET/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
     echo 'Extracting workspace.7z...';
-    7z x /workspace/workspace.7z -o/workspace -y >> /workspace/aws_log.txt
+    7z x /workspace/workspace.7z -o/workspace -p$WORKSPACE_PASSWORD -y >> /workspace/aws_log.txt
 else
     echo 'workspace.7z exists.';
 fi
 
 pushd /workspace/stable-diffusion-webui/extensions
 
-# [ ! -d stable-diffusion-webui-wildcards ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-wildcards.git
-# [ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
+[ ! -d sd-dynamic-prompts ] && git clone https://github.com/adieyal/sd-dynamic-prompts 
 [ ! -d stable-diffusion-webui-images-browser ] && git clone https://github.com/AlUlkesh/stable-diffusion-webui-images-browser
-# [ ! -d a1111-sd-webui-tagcomplete ] && git clone https://github.com/DominikDoom/a1111-sd-webui-tagcomplete
-# [ ! -d stable-diffusion-webui-tokenizer ] && git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui-tokenizer
+[ ! -d a1111-sd-webui-tagcomplete ] && git clone https://github.com/DominikDoom/a1111-sd-webui-tagcomplete
 [ ! -d sd-webui-additional-networks ] && git clone https://github.com/kohya-ss/sd-webui-additional-networks
-# [ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
+[ ! -d sd-webui-controlnet ] && git clone https://github.com/Mikubill/sd-webui-controlnet
 [ ! -d sd_dreambooth_extension ] && git clone https://github.com/d8ahazard/sd_dreambooth_extension
 [ ! -d sd-webui-supermerger ] && git clone https://github.com/hako-mikan/sd-webui-supermerger
+[ ! -d sd-extension-system-info ] && git clone https://github.com/vladmandic/sd-extension-system-info
+[ ! -d stable-diffusion-webui-embedding-merge ] && git clone https://github.com/klimaleksus/stable-diffusion-webui-embedding-merge
+[ ! -d stable-diffusion-webui-wd14-tagger ] && git clone https://github.com/toriato/stable-diffusion-webui-wd14-tagger
+[ ! -d ultimate-upscale-for-automatic1111 ] && git clone https://github.com/Coyote-A/ultimate-upscale-for-automatic1111
 
 popd
+
 pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension; 
 git checkout $COMMIT_SD_DREAMBOOTH_EXTENSION
 popd
- 
+
 bash /workspace/LoRA/runpod_sd_scripts.sh
 
 export REQS_FILE=/workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension/requirements.txt
