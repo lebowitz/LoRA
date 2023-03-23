@@ -45,7 +45,7 @@ if [ ! -f /workspace/workspace.7z ]; then
     echo 'Downloading workspace.7z...';
     aws s3 cp s3://$S3_BUCKET/workspace.7z /workspace/workspace.7z >> /workspace/aws_log.txt
     echo 'Extracting workspace.7z...';
-    7z x /workspace/workspace.7z -o/workspace -p$WORKSPACE_PASSWORD -y >> /workspace/aws_log.txt
+    7z x /workspace/workspace.7z -o/workspace -p$WORKSPACE_PASSWORD -y -aoa >> /workspace/aws_log.txt
 else
     echo 'workspace.7z exists.';
 fi
