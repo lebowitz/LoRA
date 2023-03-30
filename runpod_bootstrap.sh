@@ -70,6 +70,12 @@ pushd /workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension;
 git checkout $COMMIT_SD_DREAMBOOTH_EXTENSION
 popd
 
+pushd /workspace
+source venv/bin/activate
+pip3 install -r stable-diffusion-webui/requirements.txt
+pip3 install -r stable-diffusion-webui/extensions/sd_dreambooth_extension/requirements.txt 
+popd
+
 bash /workspace/LoRA/runpod_sd_scripts.sh
 
 export REQS_FILE=/workspace/stable-diffusion-webui/extensions/sd_dreambooth_extension/requirements.txt
